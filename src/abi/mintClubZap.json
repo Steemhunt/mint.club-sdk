@@ -1,0 +1,69 @@
+[
+  { "inputs": [], "stateMutability": "nonpayable", "type": "constructor" },
+  {
+    "inputs": [
+      { "internalType": "string", "name": "name", "type": "string" },
+      { "internalType": "string", "name": "symbol", "type": "string" },
+      { "internalType": "uint256", "name": "maxTokenSupply", "type": "uint256" },
+      { "internalType": "address", "name": "token", "type": "address" },
+      { "internalType": "uint256", "name": "tokenAmount", "type": "uint256" },
+      { "internalType": "uint256", "name": "minAmountOut", "type": "uint256" },
+      { "internalType": "address", "name": "beneficiary", "type": "address" }
+    ],
+    "name": "createAndZapIn",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "string", "name": "name", "type": "string" },
+      { "internalType": "string", "name": "symbol", "type": "string" },
+      { "internalType": "uint256", "name": "maxTokenSupply", "type": "uint256" },
+      { "internalType": "uint256", "name": "minAmountOut", "type": "uint256" },
+      { "internalType": "address", "name": "beneficiary", "type": "address" }
+    ],
+    "name": "createAndZapInBNB",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "from", "type": "address" },
+      { "internalType": "address", "name": "to", "type": "address" },
+      { "internalType": "uint256", "name": "amount", "type": "uint256" }
+    ],
+    "name": "getAmountOut",
+    "outputs": [
+      { "internalType": "uint256", "name": "tokenToReceive", "type": "uint256" },
+      { "internalType": "uint256", "name": "mintTokenTaxAmount", "type": "uint256" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "from", "type": "address" },
+      { "internalType": "address", "name": "to", "type": "address" },
+      { "internalType": "uint256", "name": "amount", "type": "uint256" },
+      { "internalType": "uint256", "name": "minAmountOut", "type": "uint256" },
+      { "internalType": "address", "name": "beneficiary", "type": "address" }
+    ],
+    "name": "zapIn",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "to", "type": "address" },
+      { "internalType": "uint256", "name": "minAmountOut", "type": "uint256" },
+      { "internalType": "address", "name": "beneficiary", "type": "address" }
+    ],
+    "name": "zapInBNB",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  }
+]
