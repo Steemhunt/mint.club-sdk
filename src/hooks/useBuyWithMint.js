@@ -1,18 +1,16 @@
 import { ADDRESS_ZERO } from "@uniswap/v3-sdk";
 import BigNumber from "bignumber.js";
 import debounce from "lodash/debounce";
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useAsync } from "react-async-hook";
 import useConstant from "use-constant";
 import { DEFAULT_TOKEN_DECIMAL, INPUT_USD } from "../constants";
+import { getErrorString } from "../errors";
 import { BIG_TEN } from "../utils/bignumber";
 import { calculateMintOutAmount } from "../utils/buysell";
+import { getMintClubBondContract } from "../utils/contracts";
 import { truncateDecimals } from "../utils/formatBalance";
 import { useMintPrice } from "./useMintPrice";
-import { useWeb3React } from "@web3-react/core";
-import { isValidAddress } from "../utils/addresses";
-import { getErrorString } from "../errors";
-import { getMintClubBondContract } from "../utils/contracts";
 
 const useDebouncedCalculation = (
   amountIn,
@@ -28,7 +26,6 @@ const useDebouncedCalculation = (
   const [buy, setBuy] = useState(null);
   const [error, setError] = useState("");
   const { getMintPrice } = useMintPrice();
-  const { account, library } = useWeb3React();
 
   async function calc(
     amountIn,

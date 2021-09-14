@@ -119,3 +119,24 @@ export async function calculateMintInAmount(
     onSuccess(mintRequired.toString(10));
   }
 }
+
+export async function calculateSell(amount, tokenAddress, onSuccess, onError) {
+  if (amount === "0") {
+    onSuccess(0, 0, null);
+    return;
+  }
+  try {
+    const contract = getMintClubBondContract();
+    const result = await contract.getBurnRefund(
+      tokenAddress,
+      new BigNumber(amount).times(BIG_TEN.pow(DEFAULT_TOKEN_DECIMAL)).toString()
+    );
+    const out = getBalanceNumber(result[0].toString());
+    const outBN = new BigNumber(result[0].toString());
+    const tax = getBalanceNumber(result[1].toString());
+    onSuccess(out, tax, outBN);
+  } catch (e) {
+    console.error(e);
+    onError(e);
+  }
+}

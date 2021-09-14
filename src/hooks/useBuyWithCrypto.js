@@ -103,7 +103,7 @@ const useDebouncedCalculation = (
   return { loading, amountOut, error };
 };
 
-export default function useBuyWithMint({
+export default function useBuyWithCrypto({
   amountIn,
   tokenIn,
   tokenAddress,

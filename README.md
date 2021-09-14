@@ -5,6 +5,7 @@
   - [Hooks](#hooks)
     - [useBuyWithMint](#usebuywithmint)
     - [useBuyWithCrypto](#usebuywithcrypto)
+    - [useSellToMint](#useselltomint)
 
 >
 
@@ -24,7 +25,7 @@ yarn add mint.club-sdk
 
 ### useBuyWithMint
 
-This hook is used to calculate the output amount of certain MINT-based token with the input of either `USD` or `MINT` value.
+This hook is used to convert MINT token to MINT-based token.
 
 Usage
 
@@ -56,11 +57,11 @@ Output
 | --------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | amountOut | object  | `{value: string, tax: string, BN: BigNumber, buy: function(signer)}` - value: output value, tax: tax in MINT, BN: bignumber.js object for more precise calculation, buy: function that invokes contrat call |
 | loading   | boolean | `true` if calculation is loading                                                                                                                                                                            |
-| error     | string  | non-null string value if there is error message                                                                                                                                                             |
+| error     | string  | string value if there is an error message                                                                                                                                                                   |
 
 ### useBuyWithCrypto
 
-This hook is used to calculate the output amount of certain MINT-based token with the input of tokens available on pancakeswap.finance.
+This hook is used to convert BEP-20 token to MINT-based token.
 
 Usage
 
@@ -92,4 +93,38 @@ Output
 | --------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | amountOut | object  | `{value: string, tax: string, BN: BigNumber, buy: function(signer)}` - value: output value, tax: tax in MINT, BN: bignumber.js object for more precise calculation, buy: function that invokes contrat call |
 | loading   | boolean | `true` if calculation is loading                                                                                                                                                                            |
-| error     | string  | non-null string value if there is error message                                                                                                                                                             |
+| error     | string  | string value if there is an error message                                                                                                                                                                   |
+
+### useSellToMint
+
+This hook is used to convert MINT-based token to MINT.
+
+Usage
+
+```jsx
+import { useSellToMint } from "mint.club-sdk";
+
+const { amountOut, loading, error } = useBuyWithCrypto({
+  amountIn,
+  tokenAddress,
+  slippage,
+  referrer,
+});
+```
+
+Input parameters
+
+| Parameter    | Type          | Description                           |
+| ------------ | ------------- | ------------------------------------- |
+| amountIn     | number/string | amount to sell                        |
+| tokenAddress | string        | MINT-based token address              |
+| slippage     | number        | pass in 2 for 2% slippage             |
+| referrer     | string        | referrer address to send buy/sell tax |
+
+Output
+
+| Parameter | Type    | Description                                                                                                                                                                                                                                                                                             |
+| --------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| amountOut | object  | `{value: string, tax: string, BN: BigNumber, sell: function(signer), approve: function(signer)}` - value: output value, tax: tax in MINT, BN: bignumber.js object for more precise calculation, sell: function that invokes `sell` contrat call, approve: function that invokes `approve` contract call |
+| loading   | boolean | `true` if calculation is loading                                                                                                                                                                                                                                                                        |
+| error     | string  | string value if there is an error message                                                                                                                                                                                                                                                               |
