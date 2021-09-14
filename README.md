@@ -5,6 +5,7 @@
   - [Hooks](#hooks)
     - [useMintPrice](#usemintprice)
     - [useAllowance](#useallowance)
+    - [useCreate](#usecreate)
     - [useBuyWithMint](#usebuywithmint)
     - [useBuyWithCrypto](#usebuywithcrypto)
     - [useSellToMint](#useselltomint)
@@ -68,6 +69,65 @@ Output
 | Parameter | Type   | Description               |
 | --------- | ------ | ------------------------- |
 | allowance | string | allowance value in string |
+
+### useCreate
+
+This hook is used to mint a new MINT-based BEP-20 token.
+
+The hook returns two functions `createToken` and `createTokenAndBuy`.
+
+Use `createToken` if you want to just mint a new token, and use `createTokenAndBuy` if you want to instant purchase the token after minting to prevent front-running.
+
+Usage
+
+```jsx
+import { useCreate, useWeb3Provider } from "mint.club-sdk";
+import { useWeb3React } from "@web3-react/core";
+
+const { account } = useWeb3React();
+const { createToken, createTokenAndBuy } = useCreate(
+  provider?.getSigner(account)
+);
+
+<div>
+  <button
+    onClick={() => {
+      createToken(name, symbol, supply, onStart, onSuccess, onError);
+    }}
+  >
+    Create w/o Instant purchase
+  </button>
+  <button
+    onClick={() => {
+      createTokenAndBuy(
+        name,
+        symbol,
+        supply,
+        amount,
+        referrer,
+        onStart,
+        onSuccess,
+        onError
+      );
+    }}
+  >
+    Create w/ Instant purchase
+  </button>;
+</div>;
+```
+
+Input parameters
+
+| Parameter | Type   | Description                             |
+| --------- | ------ | --------------------------------------- |
+| signer    | object | signer object to sign the contract call |
+
+Output
+
+| Parameter         | Type     | Description                                                                                                                                                       |
+| ----------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| createToken       | function | function createToken(name:string, symbol:string, supply:number, onStart:function?, onSuccess:function?, onError:function?);                                       |
+| createTokenAndBuy | function | function createTokenAndBuy(name:string, symbol:string, supply:number, amount:number, referrer:string, onStart:function?, onSuccess:function?, onError:function?); |
 
 ### useBuyWithMint
 
