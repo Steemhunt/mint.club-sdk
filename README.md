@@ -3,6 +3,8 @@
 - [mint.club-sdk](#mintclub-sdk)
   - [Install](#install)
   - [Hooks](#hooks)
+    - [useMintPrice](#usemintprice)
+    - [useAllowance](#useallowance)
     - [useBuyWithMint](#usebuywithmint)
     - [useBuyWithCrypto](#usebuywithcrypto)
     - [useSellToMint](#useselltomint)
@@ -22,6 +24,50 @@ yarn add mint.club-sdk
 ```
 
 ## Hooks
+
+### useMintPrice
+
+This hook is used to retrieve the current price of MINT on pancakeswap.finance.
+
+Usage
+
+```jsx
+import { useMintPrice } from "mint.club-sdk";
+
+const mintPrice = useMintPrice();
+```
+
+Output
+
+| Parameter | Type   | Description                |
+| --------- | ------ | -------------------------- |
+| price     | number | MINT price value in number |
+
+### useAllowance
+
+This hook is used to retrieve approved allowance on a certain contract.
+
+Usage
+
+```jsx
+import { useAllowance } from "mint.club-sdk";
+
+const allowance = useMintPrice(tokenAddress, owner, spender);
+```
+
+Input parameters
+
+| Parameter    | Type   | Description     |
+| ------------ | ------ | --------------- |
+| tokenAddress | string | token address   |
+| owner        | string | owner address   |
+| spender      | string | spender address |
+
+Output
+
+| Parameter | Type   | Description               |
+| --------- | ------ | ------------------------- |
+| allowance | string | allowance value in string |
 
 ### useBuyWithMint
 
