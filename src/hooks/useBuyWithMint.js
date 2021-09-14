@@ -119,7 +119,7 @@ export default function useBuyWithMint({
   referrer,
   mintPrice, //optional
 }) {
-  const { amountOut, loading, error, buy } = useDebouncedCalculation(
+  const { amountOut, loading, error } = useDebouncedCalculation(
     amountIn,
     tokenAddress,
     slippage,
@@ -128,5 +128,5 @@ export default function useBuyWithMint({
     mintPrice
   );
 
-  return { amountOut, loading, error, buy };
+  return { amountOut, loading, error };
 }
