@@ -2,6 +2,11 @@
 
 - [mint.club-sdk](#mintclub-sdk)
   - [Install](#install)
+  - [When to use Functions vs Hooks.](#when-to-use-functions-vs-hooks)
+  - [Functions](#functions)
+    - [getMintClubBondContract](#getmintclubbondcontract)
+    - [getMintClubZapContract](#getmintclubzapcontract)
+    - [getBEP20Contract](#getbep20contract)
   - [Hooks](#hooks)
     - [useMintPrice](#usemintprice)
     - [useAllowance](#useallowance)
@@ -22,6 +27,60 @@ npm install --save mint.club-sdk
 or
 
 yarn add mint.club-sdk
+```
+
+## When to use Functions vs Hooks.
+
+If you're working on a React project, using Hooks is recommended.
+
+You may use functions if you're working on a node project, or you want to only invoke the call on certain events like button click.
+
+## Functions
+
+### getMintClubBondContract
+
+Returns the `ethers.js` Contract of Mint.club Bond contract.
+
+Usage
+
+```jsx
+import { getMintClubBondContract } from "mint.club-sdk";
+
+const contract =
+  getMintClubBondContract(/* signer is required when calling a write contract call*/);
+contract.someAwesomeCall();
+```
+
+### getMintClubZapContract
+
+Returns the `ethers.js` Contract of Mint.club Zap contract.
+
+Usage
+
+```jsx
+import { getMintClubZapContract } from "mint.club-sdk";
+
+const contract =
+  getMintClubZapContract(/* signer is required when calling a write contract call*/);
+contract.someAwesomeCall();
+```
+
+Input parameters
+
+| Parameter | Type   | Description | Required |
+| --------- | ------ | ----------- | -------- |
+| signer    | object | Signer      | No       |
+
+### getBEP20Contract
+
+Usage
+
+```jsx
+import { getBEP20Contract } from "mint.club-sdk";
+
+const contract =
+  getMintClubZapContract(/* signer is optional parameter when calling a write contract call*/);
+contract.someAwesomeCall();
 ```
 
 ## Hooks
@@ -58,11 +117,11 @@ const allowance = useMintPrice(tokenAddress, owner, spender);
 
 Input parameters
 
-| Parameter    | Type   | Description     |
-| ------------ | ------ | --------------- |
-| tokenAddress | string | token address   |
-| owner        | string | owner address   |
-| spender      | string | spender address |
+| Parameter    | Type   | Description     | Required |
+| ------------ | ------ | --------------- | -------- |
+| tokenAddress | string | token address   | Yes      |
+| owner        | string | owner address   | Yes      |
+| spender      | string | spender address | Yes      |
 
 Output
 
@@ -118,9 +177,9 @@ const { createToken, createTokenAndBuy } = useCreate(
 
 Input parameters
 
-| Parameter | Type   | Description                             |
-| --------- | ------ | --------------------------------------- |
-| signer    | object | signer object to sign the contract call |
+| Parameter | Type   | Description                             | Required |
+| --------- | ------ | --------------------------------------- | -------- |
+| signer    | object | signer object to sign the contract call | Yes      |
 
 Output
 
@@ -149,13 +208,13 @@ const { amountOut, loading, error } = useBuyWithMint({
 
 Input parameters
 
-| Parameter    | Type             | Description                           |
-| ------------ | ---------------- | ------------------------------------- |
-| amountIn     | number or string | amount to spend                       |
-| inputType    | string           | "USD" or "MINT"                       |
-| slippage     | number           | pass in 2 for 2% slippage             |
-| tokenAddress | string           | MINT-based token address              |
-| referrer     | string           | referrer address to send buy/sell tax |
+| Parameter    | Type             | Description                           | Required |
+| ------------ | ---------------- | ------------------------------------- | -------- |
+| amountIn     | number or string | amount to spend                       | Yes      |
+| inputType    | string           | "USD" or "MINT"                       | Yes      |
+| slippage     | number           | pass in 2 for 2% slippage             | Yes      |
+| tokenAddress | string           | MINT-based token address              | Yes      |
+| referrer     | string           | referrer address to send buy/sell tax | No       |
 
 Output
 
@@ -185,13 +244,13 @@ const { amountOut, loading, error } = useBuyWithCrypto({
 
 Input parameters
 
-| Parameter    | Type          | Description                                                           |
-| ------------ | ------------- | --------------------------------------------------------------------- |
-| amountIn     | number/string | amount to spend                                                       |
-| tokenIn      | object        | `{address: input token address, decimals: number of token decimals }` |
-| tokenAddress | string        | MINT-based token address                                              |
-| slippage     | number        | pass in 2 for 2% slippage                                             |
-| referrer     | string        | referrer address to send buy/sell tax                                 |
+| Parameter    | Type          | Description                                                           | Required |
+| ------------ | ------------- | --------------------------------------------------------------------- | -------- |
+| amountIn     | number/string | amount to spend                                                       | Yes      |
+| tokenIn      | object        | `{address: input token address, decimals: number of token decimals }` | Yes      |
+| tokenAddress | string        | MINT-based token address                                              | Yes      |
+| slippage     | number        | pass in 2 for 2% slippage                                             | Yes      |
+| referrer     | string        | referrer address to send buy/sell tax                                 | No       |
 
 Output
 
@@ -220,12 +279,12 @@ const { amountOut, loading, error } = useBuyWithCrypto({
 
 Input parameters
 
-| Parameter    | Type          | Description                           |
-| ------------ | ------------- | ------------------------------------- |
-| amountIn     | number/string | amount to sell                        |
-| tokenAddress | string        | MINT-based token address              |
-| slippage     | number        | pass in 2 for 2% slippage             |
-| referrer     | string        | referrer address to send buy/sell tax |
+| Parameter    | Type          | Description                           | Required |
+| ------------ | ------------- | ------------------------------------- | -------- |
+| amountIn     | number/string | amount to sell                        | Yes      |
+| tokenAddress | string        | MINT-based token address              | Yes      |
+| slippage     | number        | pass in 2 for 2% slippage             | Yes      |
+| referrer     | string        | referrer address to send buy/sell tax | No       |
 
 Output
 

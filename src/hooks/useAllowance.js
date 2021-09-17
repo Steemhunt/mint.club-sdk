@@ -7,7 +7,7 @@ export default function useAllowance(tokenAddress, owner, spender) {
   useEffect(() => {
     (async () => {
       try {
-        if (tokenAddress) {
+        if (tokenAddress && owner && spender) {
           const contract = getERC20Contract(tokenAddress);
           const _allowance = await contract.allowance(owner, spender);
           setAllowance(_allowance);
@@ -17,8 +17,6 @@ export default function useAllowance(tokenAddress, owner, spender) {
       }
     })();
   }, [tokenAddress, owner, spender]);
-
-  console.log(allowance);
 
   return allowance?.toString();
 }

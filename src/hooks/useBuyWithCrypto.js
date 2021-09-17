@@ -26,6 +26,7 @@ const useDebouncedCalculation = (
   const [error, setError] = useState("");
 
   async function calc(amountIn, tokenIn, tokenAddress, slippage, referrer) {
+    console.log("token in", tokenIn);
     hasError.current = false;
     const inAddress =
       tokenIn.address === "BNB" ? addresses.wbnb[BSC_MAINNET] : tokenIn.address;

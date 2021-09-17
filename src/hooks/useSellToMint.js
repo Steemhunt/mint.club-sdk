@@ -56,8 +56,6 @@ const useDebouncedCalculation = (
             const tokenContract = getERC20Contract(tokenAddress, signer);
             const bondContract = getMintClubBondContract();
 
-            console.log(tokenContract, bondContract);
-
             return tokenContract.approve(
               bondContract.address,
               ethers.constants.MaxUint256

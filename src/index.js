@@ -4,9 +4,11 @@ import useSellToMint from "./hooks/useSellToMint";
 import useAllowance from "./hooks/useAllowance";
 import useCreate from "./hooks/useCreate";
 import useWeb3Provider from "./hooks/useWeb3Provider";
-import { useMintClubBondContract } from "./hooks/useContract";
 import {
+  getBEP20Contract,
+  getContract,
   getMintClubZapContract,
+  getMintTokenContract,
   getMintClubBondContract,
 } from "./utils/contracts";
 
@@ -17,7 +19,9 @@ export {
   useCreate,
   useAllowance,
   useWeb3Provider,
+  getContract,
   getMintClubBondContract,
   getMintClubZapContract,
-  useMintClubBondContract,
+  getMintTokenContract,
+  getBEP20Contract,
 };
