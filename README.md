@@ -2,6 +2,7 @@
 
 - [mint.club-sdk](#mintclub-sdk)
   - [Install](#install)
+  - [Constants](#constants)
   - [When to use Functions vs Hooks.](#when-to-use-functions-vs-hooks)
   - [Functions](#functions)
     - [getMintClubBondContract](#getmintclubbondcontract)
@@ -29,6 +30,19 @@ or
 yarn add mint.club-sdk
 ```
 
+## Constants
+
+These are all constants exported from the SDK.
+
+```js
+import { BSC_MAINNET, BSC_TESTNET } from "mint.club-sdk";
+```
+
+| Name        | Type   | Value |
+| ----------- | ------ | ----- |
+| BSC_MAINNET | number | 56    |
+| BSC_TESTNET | number | 97    |
+
 ## When to use Functions vs Hooks.
 
 If you're working on a React project, using Hooks is recommended.
@@ -47,9 +61,16 @@ Usage
 import { getMintClubBondContract } from "mint.club-sdk";
 
 const contract =
-  getMintClubBondContract(/* signer is required when calling a write contract call*/);
+  getMintClubBondContract(/* signer is required when calling a write contract call */);
 contract.someAwesomeCall();
 ```
+
+Input parameters
+
+| Parameter | Type   | Description      | Required |
+| --------- | ------ | ---------------- | -------- |
+| signer    | object | Signer           | No       |
+| chainId   | number | Network chain id | No       |
 
 ### getMintClubZapContract
 
@@ -61,15 +82,16 @@ Usage
 import { getMintClubZapContract } from "mint.club-sdk";
 
 const contract =
-  getMintClubZapContract(/* signer is required when calling a write contract call*/);
+  getMintClubZapContract(/* signer is required when calling a write contract call */);
 contract.someAwesomeCall();
 ```
 
 Input parameters
 
-| Parameter | Type   | Description | Required |
-| --------- | ------ | ----------- | -------- |
-| signer    | object | Signer      | No       |
+| Parameter | Type   | Description      | Required |
+| --------- | ------ | ---------------- | -------- |
+| signer    | object | Signer           | No       |
+| chainId   | number | Network chain id | No       |
 
 ### getBEP20Contract
 
@@ -79,9 +101,16 @@ Usage
 import { getBEP20Contract } from "mint.club-sdk";
 
 const contract =
-  getMintClubZapContract(/* signer is optional parameter when calling a write contract call*/);
+  getMintClubZapContract(/* signer is optional parameter when calling a write contract call */);
 contract.someAwesomeCall();
 ```
+
+Input parameters
+
+| Parameter | Type   | Description      | Required |
+| --------- | ------ | ---------------- | -------- |
+| address   | string | Token address    | No       |
+| chainId   | number | Network chain id | No       |
 
 ## Hooks
 

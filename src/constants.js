@@ -10,3 +10,4 @@ export const MINT_DECIMAL_FORMAT = "0,0.00";
 export const INPUT_MINT = "MINT";
 export const INPUT_USD = "USD";
 export const BSC_MAINNET = 56;
+export const BSC_TESTNET = 97;

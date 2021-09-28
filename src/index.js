@@ -12,6 +12,8 @@ import {
   getMintClubBondContract,
 } from "./utils/contracts";
 
+import { BSC_MAINNET, BSC_TESTNET } from "./utils/addresses";
+
 export {
   useBuyWithMint,
   useBuyWithCrypto,
@@ -24,4 +26,6 @@ export {
   getMintClubZapContract,
   getMintTokenContract,
   getBEP20Contract,
+  BSC_MAINNET,
+  BSC_TESTNET,
 };

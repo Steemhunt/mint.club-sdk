@@ -1,6 +1,5 @@
 import { ethers } from "ethers";
 import { Contract } from "@ethersproject/contracts";
-console.log(ethers.version, Contract.version);
 
 // Addresses
 import addresses from "./addresses";
