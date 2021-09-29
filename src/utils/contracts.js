@@ -21,10 +21,6 @@ export const getContract = (abi, address, signer) => {
   return new Contract(address, abi, signerOrProvider);
 };
 
-export const getERC20Contract = (address, signer) => {
-  return getContract(erc20Abi, address, signer);
-};
-
 export const getBEP20Contract = (address, signer) => {
   return getContract(erc20Abi, address, signer);
 };

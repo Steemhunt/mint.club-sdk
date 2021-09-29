@@ -2,10 +2,10 @@ import { useCallback } from "react";
 import { getMintClubBondContract } from "../utils/contracts";
 import BigNumber from "bignumber.js";
 import { BIG_TEN } from "../utils/bignumber";
-import { DEFAULT_TOKEN_DECIMAL } from "../constants";
+import { BSC_MAINNET, DEFAULT_TOKEN_DECIMAL } from "../constants";
 import { AddressZero } from "@ethersproject/constants";
 
-export default function useCreate(signer) {
+export default function useCreate(signer, chainId = BSC_MAINNET) {
   async function createToken(
     name,
     symbol,
@@ -15,7 +15,7 @@ export default function useCreate(signer) {
     onError
   ) {
     try {
-      const bondContract = getMintClubBondContract(signer);
+      const bondContract = getMintClubBondContract(signer, chainId);
       const tx = await bondContract.createToken(
         name,
         symbol,
@@ -44,7 +44,7 @@ export default function useCreate(signer) {
     onError
   ) {
     try {
-      const bondContract = getMintClubBondContract(signer);
+      const bondContract = getMintClubBondContract(signer, chainId);
       const tx = await bondContract.createAndBuy(
         name,
         symbol,

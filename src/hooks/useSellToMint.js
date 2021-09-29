@@ -5,25 +5,26 @@ import debounce from "lodash/debounce";
 import { useRef, useState } from "react";
 import { useAsync } from "react-async-hook";
 import useConstant from "use-constant";
-import { DEFAULT_TOKEN_DECIMAL } from "../constants";
+import { BSC_MAINNET, DEFAULT_TOKEN_DECIMAL } from "../constants";
 import { getErrorString } from "../errors";
 import { BIG_TEN } from "../utils/bignumber";
 import { calculateSell } from "../utils/buysell";
-import { getERC20Contract, getMintClubBondContract } from "../utils/contracts";
+import { getBEP20Contract, getMintClubBondContract } from "../utils/contracts";
 import { truncateDecimals } from "../utils/formatBalance";
 
 const useDebouncedCalculation = (
   amountIn,
   tokenAddress,
   slippage,
-  referrer
+  referrer,
+  chainId = BSC_MAINNET
 ) => {
   const hasError = useRef(false);
   const [loading, setLoading] = useState(false);
   const [amountOut, setAmountOut] = useState("");
   const [error, setError] = useState("");
 
-  async function calc(amountIn, tokenAddress, slippage, referrer) {
+  async function calc(amountIn, tokenAddress, slippage, referrer, chainId) {
     hasError.current = false;
     calculateSell(
       amountIn,
@@ -31,7 +32,7 @@ const useDebouncedCalculation = (
       (value, tax, BN) => {
         if (!hasError.current) {
           const sell = async (signer) => {
-            const bondContract = getMintClubBondContract(signer);
+            const bondContract = getMintClubBondContract(signer, chainId);
             const minRefund = BN.times(100 - slippage)
               .div(100)
               .toFixed(0, 1)
@@ -53,7 +54,7 @@ const useDebouncedCalculation = (
           };
 
           const approve = async (signer) => {
-            const tokenContract = getERC20Contract(tokenAddress, signer);
+            const tokenContract = getBEP20Contract(tokenAddress, signer);
             const bondContract = getMintClubBondContract();
 
             return tokenContract.approve(
@@ -80,9 +81,9 @@ const useDebouncedCalculation = (
     if (amountIn && amountIn > 0 && tokenAddress) {
       setError("");
       setLoading(true);
-      return debounced(amountIn, tokenAddress, slippage, referrer);
+      return debounced(amountIn, tokenAddress, slippage, referrer, chainId);
     }
-  }, [amountIn, tokenAddress, slippage, referrer]);
+  }, [amountIn, tokenAddress, slippage, referrer, chainId]);
 
   return { loading, amountOut, error };
 };
@@ -92,12 +93,14 @@ export default function useSellToMint({
   tokenAddress,
   slippage,
   referrer,
+  chainId,
 }) {
   const { amountOut, loading, error } = useDebouncedCalculation(
     amountIn,
     tokenAddress,
     slippage,
-    referrer
+    referrer,
+    chainId
   );
 
   return { amountOut, loading, error };

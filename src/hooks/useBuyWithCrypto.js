@@ -3,7 +3,6 @@ import debounce from "lodash/debounce";
 import { useRef, useState } from "react";
 import { useAsync } from "react-async-hook";
 import useConstant from "use-constant";
-import { DEFAULT_TOKEN_DECIMAL, INPUT_USD } from "../constants";
 import { getErrorString } from "../errors";
 import { BIG_TEN } from "../utils/bignumber";
 import { calculateCryptoOutAmount } from "../utils/buysell";
@@ -18,15 +17,22 @@ const useDebouncedCalculation = (
   tokenIn,
   tokenAddress,
   slippage,
-  referrer
+  referrer,
+  chainId = BSC_MAINNET
 ) => {
   const hasError = useRef(false);
   const [loading, setLoading] = useState(false);
   const [amountOut, setAmountOut] = useState("");
   const [error, setError] = useState("");
 
-  async function calc(amountIn, tokenIn, tokenAddress, slippage, referrer) {
-    console.log("token in", tokenIn);
+  async function calc(
+    amountIn,
+    tokenIn,
+    tokenAddress,
+    slippage,
+    referrer,
+    chainId
+  ) {
     hasError.current = false;
     const inAddress =
       tokenIn.address === "BNB" ? addresses.wbnb[BSC_MAINNET] : tokenIn.address;
@@ -37,7 +43,7 @@ const useDebouncedCalculation = (
       (value, tax, BN) => {
         if (!hasError.current) {
           const buy = async (signer) => {
-            const zapContract = getMintClubZapContract(signer);
+            const zapContract = getMintClubZapContract(signer, chainId);
             const minReward = truncateDecimals(
               BN.times(100 - slippage)
                 .div(100)
@@ -90,7 +96,14 @@ const useDebouncedCalculation = (
     } else if (amountIn && amountIn > 0 && tokenAddress && tokenIn.address) {
       setError("");
       setLoading(true);
-      return debounced(amountIn, tokenIn, tokenAddress, slippage, referrer);
+      return debounced(
+        amountIn,
+        tokenIn,
+        tokenAddress,
+        slippage,
+        referrer,
+        chainId
+      );
     }
   }, [
     amountIn,
@@ -99,6 +112,7 @@ const useDebouncedCalculation = (
     tokenAddress,
     slippage,
     referrer,
+    chainId,
   ]);
 
   return { loading, amountOut, error };
@@ -110,13 +124,15 @@ export default function useBuyWithCrypto({
   tokenAddress,
   slippage,
   referrer,
+  chainId, // optional
 }) {
   const { amountOut, loading, error } = useDebouncedCalculation(
     amountIn,
     tokenIn,
     tokenAddress,
     slippage,
-    referrer
+    referrer,
+    chainId
   );
 
   return { amountOut, loading, error };

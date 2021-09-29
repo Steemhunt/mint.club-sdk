@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { isValidAddress } from "../utils/addresses";
-import { getERC20Contract, getMintTokenContract } from "../utils/contracts";
+import { getBEP20Contract } from "../utils/contracts";
 
 export default function useAllowance(tokenAddress, owner, spender) {
   const [allowance, setAllowance] = useState(null);
@@ -8,7 +7,7 @@ export default function useAllowance(tokenAddress, owner, spender) {
     (async () => {
       try {
         if (tokenAddress && owner && spender) {
-          const contract = getERC20Contract(tokenAddress);
+          const contract = getBEP20Contract(tokenAddress);
           const _allowance = await contract.allowance(owner, spender);
           setAllowance(_allowance);
         }

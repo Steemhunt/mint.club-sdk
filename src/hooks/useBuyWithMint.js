@@ -4,7 +4,7 @@ import debounce from "lodash/debounce";
 import { useRef, useState } from "react";
 import { useAsync } from "react-async-hook";
 import useConstant from "use-constant";
-import { DEFAULT_TOKEN_DECIMAL, INPUT_USD } from "../constants";
+import { BSC_MAINNET, DEFAULT_TOKEN_DECIMAL, INPUT_USD } from "../constants";
 import { getErrorString } from "../errors";
 import { BIG_TEN } from "../utils/bignumber";
 import { calculateMintOutAmount } from "../utils/buysell";
@@ -18,7 +18,8 @@ const useDebouncedCalculation = (
   slippage,
   referrer,
   isUSD,
-  forcedMintPrice
+  forcedMintPrice,
+  chainId = BSC_MAINNET
 ) => {
   const hasError = useRef(false);
   const [loading, setLoading] = useState(false);
@@ -33,7 +34,8 @@ const useDebouncedCalculation = (
     slippage,
     referrer,
     isUSD,
-    forcedMintPrice
+    forcedMintPrice,
+    chainId
   ) {
     let price, amount;
     amount = amountIn;
@@ -65,7 +67,7 @@ const useDebouncedCalculation = (
               0
             );
 
-            const bondContract = getMintClubBondContract(signer);
+            const bondContract = getMintClubBondContract(signer, chainId);
             return bondContract.buy(
               tokenAddress,
               reserveAmount,
@@ -100,10 +102,19 @@ const useDebouncedCalculation = (
         slippage,
         referrer,
         isUSD,
-        forcedMintPrice
+        forcedMintPrice,
+        chainId
       );
     }
-  }, [amountIn, tokenAddress, slippage, referrer, isUSD, forcedMintPrice]);
+  }, [
+    amountIn,
+    tokenAddress,
+    slippage,
+    referrer,
+    isUSD,
+    forcedMintPrice,
+    chainId,
+  ]);
 
   return { loading, amountOut, error, buy };
 };
@@ -115,6 +126,7 @@ export default function useBuyWithMint({
   inputType,
   referrer,
   mintPrice, //optional
+  chainId, //optional
 }) {
   const { amountOut, loading, error } = useDebouncedCalculation(
     amountIn,
@@ -122,7 +134,8 @@ export default function useBuyWithMint({
     slippage,
     referrer,
     inputType === INPUT_USD,
-    mintPrice
+    mintPrice,
+    chainId
   );
 
   return { amountOut, loading, error };
