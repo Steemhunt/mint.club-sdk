@@ -40,6 +40,7 @@ const useDebouncedCalculation = (
       inAddress,
       tokenAddress,
       amountIn,
+      chainId,
       (value, tax, BN) => {
         if (!hasError.current) {
           const buy = async (signer) => {

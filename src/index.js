@@ -4,6 +4,7 @@ import useSellToMint from "./hooks/useSellToMint";
 import useAllowance from "./hooks/useAllowance";
 import useCreate from "./hooks/useCreate";
 import useWeb3Provider from "./hooks/useWeb3Provider";
+import ADDRESSES from "./utils/addresses";
 import {
   getBEP20Contract,
   getContract,
@@ -28,4 +29,5 @@ export {
   getBEP20Contract,
   BSC_MAINNET,
   BSC_TESTNET,
+  ADDRESSES,
 };

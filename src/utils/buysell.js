@@ -1,6 +1,6 @@
 import BigNumber from "bignumber.js";
 import { getMintClubBondContract, getMintClubZapContract } from "./contracts";
-import { DEFAULT_TOKEN_DECIMAL } from "../constants";
+import { BSC_MAINNET, DEFAULT_TOKEN_DECIMAL } from "../constants";
 import { BIG_TEN } from "./bignumber";
 import { getBalanceNumber, truncateDecimals } from "./formatBalance";
 import { INPUT_USD } from "../constants";
@@ -9,12 +9,14 @@ export async function calculateCryptoOutAmount(
   from,
   to,
   amount,
+  chainId,
   onSuccess,
   onError
 ) {
   try {
     // console.log(toFixedDown(mintAmount));
-    const contract = getMintClubZapContract();
+    const contract = getMintClubZapContract(null, chainId);
+    console.log(contract);
     const result = await contract.getAmountOut(
       from,
       to,
@@ -62,13 +64,17 @@ export async function calculateCryptoInAmount(
 export async function calculateMintOutAmount(
   tokenAddress,
   mintAmount,
+  chainId = BSC_MAINNET,
   onSuccess,
   onError
 ) {
   try {
+    const contract = getMintClubBondContract(null, chainId);
     console.log(
+      contract.address,
       tokenAddress,
       mintAmount,
+      chainId,
       truncateDecimals(
         new BigNumber(mintAmount)
           .times(BIG_TEN.pow(DEFAULT_TOKEN_DECIMAL))
@@ -76,7 +82,6 @@ export async function calculateMintOutAmount(
         0
       )
     );
-    const contract = getMintClubBondContract();
     const result = await contract.getMintReward(
       tokenAddress,
       truncateDecimals(

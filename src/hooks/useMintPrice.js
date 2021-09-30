@@ -18,14 +18,13 @@ import { BSC_MAINNET } from "../constants";
 
 export const BIPS_BASE = JSBI.BigInt(10000);
 
-const MINT = new Token(BSC_MAINNET, addresses.mint[BSC_MAINNET], 18);
-const USDT = new Token(BSC_MAINNET, addresses.usdt[BSC_MAINNET], 18);
-const BNB = WETH[BSC_MAINNET];
-
-export function useMintPrice() {
+export function useMintPrice(chainId = BSC_MAINNET) {
   const getMintPrice = useCallback(async () => {
     try {
-      const provider = new JsonRpcProvider(getNodeUrl());
+      const MINT = new Token(chainId, addresses.mint[chainId], 18);
+      const USDT = new Token(chainId, addresses.usdt[chainId], 18);
+      const BNB = WETH[chainId];
+      const provider = new JsonRpcProvider(getNodeUrl(chainId));
       const MINT_BNB_PAIR = await Fetcher.fetchPairData(MINT, BNB, provider);
       const BNB_USDT_PAIR = await Fetcher.fetchPairData(USDT, BNB, provider);
       const route = new Route([MINT_BNB_PAIR, BNB_USDT_PAIR], MINT);

@@ -41,14 +41,20 @@ const useDebouncedCalculation = (
     amount = amountIn;
 
     if (isUSD) {
-      price = forcedMintPrice || (await getMintPrice());
-      amount = amountIn / price;
+      price = forcedMintPrice || (await getMintPrice(chainId));
+      console.log(price);
+      if (price === 0) {
+        throw new Error("Value of MINT price is 0.");
+      } else {
+        amount = amountIn / price;
+      }
     }
 
     hasError.current = false;
     calculateMintOutAmount(
       tokenAddress,
       amount,
+      chainId,
       (value, tax, BN) => {
         if (!hasError.current) {
           const buy = async (signer) => {

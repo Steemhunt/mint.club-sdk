@@ -3,7 +3,6 @@ import { Contract } from "@ethersproject/contracts";
 
 // Addresses
 import addresses from "./addresses";
-const { mintClubBond, mintClubZap, mint, pancakeSwapRouter, wbnb } = addresses;
 
 // ABI
 import mintAbi from "../abi/mint.json";
@@ -16,35 +15,46 @@ import { abi as IUniswapV2Router02ABI } from "@uniswap/v2-periphery/build/IUnisw
 import { simpleRpcProvider } from "./providers";
 import { BSC_MAINNET } from "../constants";
 
-export const getContract = (abi, address, signer) => {
-  const signerOrProvider = signer ?? simpleRpcProvider;
+const { mintClubBond, mintClubZap, mint, pancakeSwapRouter, wbnb } = addresses;
+
+export const getContract = (abi, address, signer, chainId) => {
+  const signerOrProvider = signer ?? simpleRpcProvider(chainId);
   return new Contract(address, abi, signerOrProvider);
 };
 
-export const getBEP20Contract = (address, signer) => {
-  return getContract(erc20Abi, address, signer);
+export const getBEP20Contract = (address, signer, chainId = BSC_MAINNET) => {
+  return getContract(erc20Abi, address, signer, chainId);
 };
 
-export const getMintTokenContract = (address, signer) => {
-  return getContract(mintClubTokenAbi, address, signer);
+export const getMintTokenContract = (
+  address,
+  signer,
+  chainId = BSC_MAINNET
+) => {
+  return getContract(mintClubTokenAbi, address, signer, chainId);
 };
 
 export const getMintContract = (signer, chainId = BSC_MAINNET) => {
-  return getContract(mintAbi, mint[chainId], signer);
+  return getContract(mintAbi, mint[chainId], signer, chainId);
 };
 
 export const getMintClubBondContract = (signer, chainId = BSC_MAINNET) => {
-  return getContract(mintClubBondAbi, mintClubBond[chainId], signer);
+  return getContract(mintClubBondAbi, mintClubBond[chainId], signer, chainId);
 };
 
 export const getMintClubZapContract = (signer, chainId = BSC_MAINNET) => {
-  return getContract(mintClubZapAbi, mintClubZap[chainId], signer);
+  return getContract(mintClubZapAbi, mintClubZap[chainId], signer, chainId);
 };
 
 export const getRouterContract = (signer, chainId = BSC_MAINNET) => {
-  return getContract(IUniswapV2Router02ABI, pancakeSwapRouter[chainId], signer);
+  return getContract(
+    IUniswapV2Router02ABI,
+    pancakeSwapRouter[chainId],
+    signer,
+    chainId
+  );
 };
 
 export const getWBNBContract = (signer, chainId = BSC_MAINNET) => {
-  return getContract(wbnbAbi, wbnb[chainId], signer);
+  return getContract(wbnbAbi, wbnb[chainId], signer, chainId);
 };
