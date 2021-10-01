@@ -14,6 +14,7 @@ import {
 } from "./utils/contracts";
 
 import { BSC_MAINNET, BSC_TESTNET } from "./utils/addresses";
+import useApprove from "./hooks/useApprove";
 
 export {
   useBuyWithMint,
@@ -22,6 +23,7 @@ export {
   useCreate,
   useAllowance,
   useWeb3Provider,
+  useApprove,
   getContract,
   getMintClubBondContract,
   getMintClubZapContract,
