@@ -29,6 +29,7 @@ const useDebouncedCalculation = (
     calculateSell(
       amountIn,
       tokenAddress,
+      chainId,
       (value, tax, BN) => {
         if (!hasError.current) {
           const sell = async (signer) => {
@@ -54,8 +55,12 @@ const useDebouncedCalculation = (
           };
 
           const approve = async (signer) => {
-            const tokenContract = getBEP20Contract(tokenAddress, signer);
-            const bondContract = getMintClubBondContract();
+            const tokenContract = getBEP20Contract(
+              tokenAddress,
+              signer,
+              chainId
+            );
+            const bondContract = getMintClubBondContract(signer, chainId);
 
             return tokenContract.approve(
               bondContract.address,

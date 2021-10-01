@@ -35,7 +35,7 @@ const useDebouncedCalculation = (
   ) {
     hasError.current = false;
     const inAddress =
-      tokenIn.address === "BNB" ? addresses.wbnb[BSC_MAINNET] : tokenIn.address;
+      tokenIn.address === "BNB" ? addresses.wbnb[chainId] : tokenIn.address;
     calculateCryptoOutAmount(
       inAddress,
       tokenAddress,
@@ -83,6 +83,7 @@ const useDebouncedCalculation = (
         setLoading(false);
       },
       (e) => {
+        console.error(e);
         setError(getErrorString(e));
         setLoading(false);
       }
@@ -127,6 +128,7 @@ export default function useBuyWithCrypto({
   referrer,
   chainId, // optional
 }) {
+  console.log(amountIn, tokenIn, tokenAddress, slippage, referrer, chainId);
   const { amountOut, loading, error } = useDebouncedCalculation(
     amountIn,
     tokenIn,

@@ -9,14 +9,15 @@ export async function calculateCryptoOutAmount(
   from,
   to,
   amount,
-  chainId,
+  chainId = BSC_MAINNET,
   onSuccess,
   onError
 ) {
   try {
     // console.log(toFixedDown(mintAmount));
+    console.log("call");
     const contract = getMintClubZapContract(null, chainId);
-    console.log(contract);
+    console.log(from, to, amount, chainId);
     const result = await contract.getAmountOut(
       from,
       to,
@@ -70,18 +71,6 @@ export async function calculateMintOutAmount(
 ) {
   try {
     const contract = getMintClubBondContract(null, chainId);
-    console.log(
-      contract.address,
-      tokenAddress,
-      mintAmount,
-      chainId,
-      truncateDecimals(
-        new BigNumber(mintAmount)
-          .times(BIG_TEN.pow(DEFAULT_TOKEN_DECIMAL))
-          .toString(),
-        0
-      )
-    );
     const result = await contract.getMintReward(
       tokenAddress,
       truncateDecimals(
@@ -125,13 +114,19 @@ export async function calculateMintInAmount(
   }
 }
 
-export async function calculateSell(amount, tokenAddress, onSuccess, onError) {
+export async function calculateSell(
+  amount,
+  tokenAddress,
+  chainId,
+  onSuccess,
+  onError
+) {
   if (amount === "0") {
     onSuccess(0, 0, null);
     return;
   }
   try {
-    const contract = getMintClubBondContract();
+    const contract = getMintClubBondContract(null, chainId);
     const result = await contract.getBurnRefund(
       tokenAddress,
       new BigNumber(amount).times(BIG_TEN.pow(DEFAULT_TOKEN_DECIMAL)).toString()

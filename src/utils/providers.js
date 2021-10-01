@@ -16,8 +16,8 @@ const REACT_APP_TEST_NODE_3 = "https://data-seed-prebsc-2-s3.binance.org:8545/";
 // Array of available nodes to connect to
 export const nodes = [REACT_APP_NODE_1, REACT_APP_NODE_2, REACT_APP_NODE_3];
 export const testNodes = [
-  // REACT_APP_TEST_NODE_1,
-  // REACT_APP_TEST_NODE_2,
+  REACT_APP_TEST_NODE_1,
+  REACT_APP_TEST_NODE_2,
   REACT_APP_TEST_NODE_3,
 ];
 

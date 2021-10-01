@@ -12,7 +12,7 @@ export default function useAllowance(
   useEffect(() => {
     (async () => {
       try {
-        if (tokenAddress && owner && spender) {
+        if (tokenAddress && owner && spender && chainId) {
           const contract = getBEP20Contract(tokenAddress, null, chainId);
           const _allowance = await contract.allowance(owner, spender);
           setAllowance(_allowance);
@@ -21,7 +21,7 @@ export default function useAllowance(
         throw new Error(e);
       }
     })();
-  }, [tokenAddress, owner, spender]);
+  }, [tokenAddress, owner, spender, chainId]);
 
   return allowance?.toString();
 }
