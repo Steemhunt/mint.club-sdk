@@ -4,7 +4,11 @@
     "inputs": [
       { "internalType": "string", "name": "name", "type": "string" },
       { "internalType": "string", "name": "symbol", "type": "string" },
-      { "internalType": "uint256", "name": "maxTokenSupply", "type": "uint256" },
+      {
+        "internalType": "uint256",
+        "name": "maxTokenSupply",
+        "type": "uint256"
+      },
       { "internalType": "address", "name": "token", "type": "address" },
       { "internalType": "uint256", "name": "tokenAmount", "type": "uint256" },
       { "internalType": "uint256", "name": "minAmountOut", "type": "uint256" },
@@ -19,7 +23,11 @@
     "inputs": [
       { "internalType": "string", "name": "name", "type": "string" },
       { "internalType": "string", "name": "symbol", "type": "string" },
-      { "internalType": "uint256", "name": "maxTokenSupply", "type": "uint256" },
+      {
+        "internalType": "uint256",
+        "name": "maxTokenSupply",
+        "type": "uint256"
+      },
       { "internalType": "uint256", "name": "minAmountOut", "type": "uint256" },
       { "internalType": "address", "name": "beneficiary", "type": "address" }
     ],
@@ -34,10 +42,18 @@
       { "internalType": "address", "name": "to", "type": "address" },
       { "internalType": "uint256", "name": "amount", "type": "uint256" }
     ],
-    "name": "getAmountOut",
+    "name": "estimateZapIn",
     "outputs": [
-      { "internalType": "uint256", "name": "tokenToReceive", "type": "uint256" },
-      { "internalType": "uint256", "name": "mintTokenTaxAmount", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "tokenToReceive",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "mintTokenTaxAmount",
+        "type": "uint256"
+      }
     ],
     "stateMutability": "view",
     "type": "function"
@@ -46,7 +62,29 @@
     "inputs": [
       { "internalType": "address", "name": "from", "type": "address" },
       { "internalType": "address", "name": "to", "type": "address" },
-      { "internalType": "uint256", "name": "amount", "type": "uint256" },
+      { "internalType": "uint256", "name": "amount", "type": "uint256" }
+    ],
+    "name": "estimateZapOut",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "amountToReceive",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "mintTokenTaxAmount",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "from", "type": "address" },
+      { "internalType": "address", "name": "to", "type": "address" },
+      { "internalType": "uint256", "name": "amountIn", "type": "uint256" },
       { "internalType": "uint256", "name": "minAmountOut", "type": "uint256" },
       { "internalType": "address", "name": "beneficiary", "type": "address" }
     ],
@@ -64,6 +102,31 @@
     "name": "zapInBNB",
     "outputs": [],
     "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "from", "type": "address" },
+      { "internalType": "address", "name": "to", "type": "address" },
+      { "internalType": "uint256", "name": "amountIn", "type": "uint256" },
+      { "internalType": "uint256", "name": "minAmountOut", "type": "uint256" },
+      { "internalType": "address", "name": "beneficiary", "type": "address" }
+    ],
+    "name": "zapOut",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "from", "type": "address" },
+      { "internalType": "uint256", "name": "amountIn", "type": "uint256" },
+      { "internalType": "uint256", "name": "minAmountOut", "type": "uint256" },
+      { "internalType": "address", "name": "beneficiary", "type": "address" }
+    ],
+    "name": "zapOutBNB",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   }
 ]

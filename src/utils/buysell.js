@@ -18,7 +18,7 @@ export async function calculateCryptoOutAmount(
     console.log("call");
     const contract = getMintClubZapContract(null, chainId);
     console.log(from, to, amount, chainId);
-    const result = await contract.getAmountOut(
+    const result = await contract.estimateZapIn(
       from,
       to,
       truncateDecimals(
@@ -39,6 +39,16 @@ export async function calculateCryptoOutAmount(
     onError(e);
   }
 }
+
+/**
+ * Used for reverse calculation, when calculating IN amount.
+ * @param {*} amount
+ * @param {*} totalSupply
+ * @param {*} address
+ * @param {*} getBestTradeExactOut
+ * @param {*} onSuccess
+ * @param {*} onError
+ */
 
 export async function calculateCryptoInAmount(
   amount,
@@ -114,7 +124,7 @@ export async function calculateMintInAmount(
   }
 }
 
-export async function calculateSell(
+export async function calculateSellToMint(
   amount,
   tokenAddress,
   chainId,
@@ -129,6 +139,35 @@ export async function calculateSell(
     const contract = getMintClubBondContract(null, chainId);
     const result = await contract.getBurnRefund(
       tokenAddress,
+      new BigNumber(amount).times(BIG_TEN.pow(DEFAULT_TOKEN_DECIMAL)).toString()
+    );
+    const out = getBalanceNumber(result[0].toString());
+    const outBN = new BigNumber(result[0].toString());
+    const tax = getBalanceNumber(result[1].toString());
+    onSuccess(out, tax, outBN);
+  } catch (e) {
+    console.error(e);
+    onError(e);
+  }
+}
+
+export async function calculateSellToCrypto(
+  from,
+  to,
+  amount,
+  chainId,
+  onSuccess,
+  onError
+) {
+  if (amount === "0") {
+    onSuccess(0, 0, null);
+    return;
+  }
+  try {
+    const contract = getMintClubZapContract(null, chainId);
+    const result = await contract.estimateZapOut(
+      from,
+      to,
       new BigNumber(amount).times(BIG_TEN.pow(DEFAULT_TOKEN_DECIMAL)).toString()
     );
     const out = getBalanceNumber(result[0].toString());

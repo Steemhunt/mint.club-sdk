@@ -128,7 +128,6 @@ export default function useBuyWithCrypto({
   referrer,
   chainId, // optional
 }) {
-  console.log(amountIn, tokenIn, tokenAddress, slippage, referrer, chainId);
   const { amountOut, loading, error } = useDebouncedCalculation(
     amountIn,
     tokenIn,
