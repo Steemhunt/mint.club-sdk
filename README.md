@@ -1,6 +1,7 @@
 # mint.club-sdk
 
 - [mint.club-sdk](#mintclub-sdk)
+  - [Demo](#demo)
   - [Install](#install)
   - [Constants](#constants)
   - [When to use Functions vs Hooks.](#when-to-use-functions-vs-hooks)
@@ -20,6 +21,10 @@
 >
 
 [![NPM](https://img.shields.io/npm/v/mint.club-sdk.svg)](https://www.npmjs.com/package/mint.club-sdk) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+
+## Demo
+
+Please check out the demo code [here](https://github.com/Steemhunt/mint.club-sdk-example).
 
 ## Install
 
