@@ -69,8 +69,8 @@ const useDebouncedCalculation = (
               );
             } else {
               return zapContract.zapOut(
-                tokenOut.address,
                 tokenAddress,
+                tokenOut.address,
                 new BigNumber(amountIn)
                   .times(BIG_TEN.pow(tokenOut.decimals))
                   .toString(),
