@@ -15,6 +15,7 @@
     - [useBuyWithMint](#usebuywithmint)
     - [useBuyWithCrypto](#usebuywithcrypto)
     - [useSellToMint](#useselltomint)
+    - [useSellToCrypto](#useselltocrypto)
 
 >
 
@@ -61,7 +62,7 @@ Usage
 import { getMintClubBondContract } from "mint.club-sdk";
 
 const contract =
-  getMintClubBondContract(/* signer is required when calling a write contract call */);
+  getMintClubBondContract(signer?, chainId?);
 contract.someAwesomeCall();
 ```
 
@@ -82,7 +83,7 @@ Usage
 import { getMintClubZapContract } from "mint.club-sdk";
 
 const contract =
-  getMintClubZapContract(/* signer is required when calling a write contract call */);
+  getMintClubZapContract(signer?, chainId?);
 contract.someAwesomeCall();
 ```
 
@@ -101,7 +102,7 @@ Usage
 import { getBEP20Contract } from "mint.club-sdk";
 
 const contract =
-  getMintClubZapContract(/* signer is optional parameter when calling a write contract call */);
+  getMintClubZapContract(signer?, chainId?);
 contract.someAwesomeCall();
 ```
 
@@ -123,8 +124,14 @@ Usage
 ```jsx
 import { useMintPrice } from "mint.club-sdk";
 
-const mintPrice = useMintPrice();
+const mintPrice = useMintPrice(chainId?);
 ```
+
+Input parameters
+
+| Parameter | Type   | Description      | Required |
+| --------- | ------ | ---------------- | -------- |
+| chainId   | number | Network chain id | No       |
 
 Output
 
@@ -141,16 +148,17 @@ Usage
 ```jsx
 import { useAllowance } from "mint.club-sdk";
 
-const allowance = useMintPrice(tokenAddress, owner, spender);
+const allowance = useMintPrice(tokenAddress, owner, spender, chainId?);
 ```
 
 Input parameters
 
-| Parameter    | Type   | Description     | Required |
-| ------------ | ------ | --------------- | -------- |
-| tokenAddress | string | token address   | Yes      |
-| owner        | string | owner address   | Yes      |
-| spender      | string | spender address | Yes      |
+| Parameter    | Type   | Description      | Required |
+| ------------ | ------ | ---------------- | -------- |
+| tokenAddress | string | token address    | Yes      |
+| owner        | string | owner address    | Yes      |
+| spender      | string | spender address  | Yes      |
+| chainId      | number | Network chain id | No       |
 
 Output
 
@@ -174,7 +182,8 @@ import { useWeb3React } from "@web3-react/core";
 
 const { account } = useWeb3React();
 const { createToken, createTokenAndBuy } = useCreate(
-  provider?.getSigner(account)
+  provider?.getSigner(account),
+  chainId?
 );
 
 <div>
@@ -209,6 +218,7 @@ Input parameters
 | Parameter | Type   | Description                             | Required |
 | --------- | ------ | --------------------------------------- | -------- |
 | signer    | object | signer object to sign the contract call | Yes      |
+| chainId   | number | Network chain id                        | No       |
 
 Output
 
@@ -231,7 +241,8 @@ const { amountOut, loading, error } = useBuyWithMint({
   inputType,
   slippage,
   tokenAddress,
-  referrer,
+  referrer?,
+  chainId?
 });
 ```
 
@@ -244,6 +255,7 @@ Input parameters
 | slippage     | number           | pass in 2 for 2% slippage             | Yes      |
 | tokenAddress | string           | MINT-based token address              | Yes      |
 | referrer     | string           | referrer address to send buy/sell tax | No       |
+| chainId      | number           | Network chain id                      | No       |
 
 Output
 
@@ -267,7 +279,8 @@ const { amountOut, loading, error } = useBuyWithCrypto({
   tokenIn,
   tokenAddress,
   slippage,
-  referrer,
+  referrer?,
+  chainId?
 });
 ```
 
@@ -280,6 +293,7 @@ Input parameters
 | tokenAddress | string        | MINT-based token address                                              | Yes      |
 | slippage     | number        | pass in 2 for 2% slippage                                             | Yes      |
 | referrer     | string        | referrer address to send buy/sell tax                                 | No       |
+| chainId      | number        | Network chain id                                                      | No       |
 
 Output
 
@@ -302,7 +316,8 @@ const { amountOut, loading, error } = useBuyWithCrypto({
   amountIn,
   tokenAddress,
   slippage,
-  referrer,
+  referrer?,
+  chainId?
 });
 ```
 
@@ -314,6 +329,44 @@ Input parameters
 | tokenAddress | string        | MINT-based token address              | Yes      |
 | slippage     | number        | pass in 2 for 2% slippage             | Yes      |
 | referrer     | string        | referrer address to send buy/sell tax | No       |
+
+Output
+
+| Parameter | Type    | Description                                                                                                                                                                                                                                                                                             |
+| --------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| amountOut | object  | `{value: string, tax: string, BN: BigNumber, sell: function(signer), approve: function(signer)}` - value: output value, tax: tax in MINT, BN: bignumber.js object for more precise calculation, sell: function that invokes `sell` contrat call, approve: function that invokes `approve` contract call |
+| loading   | boolean | `true` if calculation is loading                                                                                                                                                                                                                                                                        |
+| error     | string  | string value if there is an error message                                                                                                                                                                                                                                                               |
+
+### useSellToCrypto
+
+This hook is used to convert MINT-based token to other BEP-20 token.
+
+Usage
+
+```jsx
+import { useSellToCrypto } from "mint.club-sdk";
+
+const { amountOut, loading, error } = useBuyWithCrypto({
+  amountIn,
+  tokenAddress,
+  tokenOut,
+  slippage,
+  referrer?,
+  chainId?
+});
+```
+
+Input parameters
+
+| Parameter    | Type          | Description                                                            | Required |
+| ------------ | ------------- | ---------------------------------------------------------------------- | -------- |
+| amountIn     | number/string | amount to sell                                                         | Yes      |
+| tokenAddress | string        | MINT-based token address                                               | Yes      |
+| tokenOut     | object        | `{address: output token address, decimals: number of token decimals }` | Yes      |
+| slippage     | number        | pass in 2 for 2% slippage                                              | Yes      |
+| referrer     | string        | referrer address to send buy/sell tax                                  | No       |
+| chainId      | number        | Network chain id                                                       | No       |
 
 Output
 
