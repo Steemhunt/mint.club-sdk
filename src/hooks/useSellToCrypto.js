@@ -101,6 +101,7 @@ const useDebouncedCalculation = (
         setLoading(false);
       },
       (e) => {
+        console.error(e);
         setError(getErrorString(e));
         setLoading(false);
       }
