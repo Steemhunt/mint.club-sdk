@@ -129,7 +129,8 @@ Usage
 ```jsx
 import { useMintPrice } from "mint.club-sdk";
 
-const mintPrice = useMintPrice(chainId?);
+const {getPrice} = useMintPrice(chainId?);
+const price = await getPrice();
 ```
 
 Input parameters

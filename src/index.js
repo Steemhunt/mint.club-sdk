@@ -3,6 +3,7 @@ import useBuyWithCrypto from "./hooks/useBuyWithCrypto";
 import useSellToMint from "./hooks/useSellToMint";
 import useSellToCrypto from "./hooks/useSellToCrypto";
 import useAllowance from "./hooks/useAllowance";
+import useMintPrice from "./hooks/useMintPrice";
 import useCreate from "./hooks/useCreate";
 import useWeb3Provider from "./hooks/useWeb3Provider";
 import ADDRESSES from "./utils/addresses";
@@ -24,6 +25,7 @@ export {
   useSellToCrypto,
   useCreate,
   useAllowance,
+  useMintPrice,
   useWeb3Provider,
   useApprove,
   getContract,

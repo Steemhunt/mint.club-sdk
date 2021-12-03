@@ -18,7 +18,7 @@ import { BSC_MAINNET } from "../constants";
 
 export const BIPS_BASE = JSBI.BigInt(10000);
 
-export function useMintPrice(chainId = BSC_MAINNET) {
+export default function useMintPrice(chainId = BSC_MAINNET) {
   const getMintPrice = useCallback(async () => {
     try {
       const MINT = new Token(chainId, addresses.mint[chainId], 18);
