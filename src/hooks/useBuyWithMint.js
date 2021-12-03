@@ -10,7 +10,7 @@ import { BIG_TEN } from "../utils/bignumber";
 import { calculateMintOutAmount } from "../utils/buysell";
 import { getMintClubBondContract } from "../utils/contracts";
 import { truncateDecimals } from "../utils/formatBalance";
-import { useMintPrice } from "./useMintPrice";
+import useMintPrice from "./useMintPrice";
 
 const useDebouncedCalculation = (
   amountIn,
