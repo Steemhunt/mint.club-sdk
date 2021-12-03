@@ -107,7 +107,7 @@ Usage
 import { getBEP20Contract } from "mint.club-sdk";
 
 const contract =
-  getMintClubZapContract(signer?, chainId?);
+  getBEP20Contract(address, chainId?);
 contract.someAwesomeCall();
 ```
 
@@ -115,7 +115,7 @@ Input parameters
 
 | Parameter | Type   | Description      | Required |
 | --------- | ------ | ---------------- | -------- |
-| address   | string | Token address    | No       |
+| address   | string | Token address    | Yes      |
 | chainId   | number | Network chain id | No       |
 
 ## Hooks
