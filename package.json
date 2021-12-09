@@ -1,6 +1,6 @@
 {
   "name": "mint.club-sdk",
-  "version": "1.1.5",
+  "version": "2.0.0",
   "description": "",
   "author": "Steemhunt",
   "license": "MIT",
@@ -19,9 +19,7 @@
     "start": "rollup -c -w",
     "prepare": "yarn run build"
   },
-  "peerDependencies": {
-    "react": "^16.9.0"
-  },
+  "peerDependencies": {},
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/plugin-external-helpers": "^7.0.0",
@@ -55,8 +53,6 @@
     "eslint-plugin-react": "^7.10.0",
     "eslint-plugin-standard": "^3.1.0",
     "gh-pages": "^2.0.1",
-    "react-scripts": "^3.4.0",
-    "react-test-renderer": "^16.9.0",
     "rollup": "^1.1.2",
     "rollup-plugin-babel": "^4.3.2",
     "rollup-plugin-commonjs": "^9.2.0",
@@ -71,8 +67,6 @@
     "bignumber.js": "^9.0.1",
     "ethers": "5.4.1",
     "lodash": "^4.17.21",
-    "numeral": "^2.0.6",
-    "react-async-hook": "^3.6.2",
-    "use-constant": "^1.1.0"
+    "numeral": "^2.0.6"
   }
 }

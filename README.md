@@ -4,19 +4,20 @@
   - [Demo](#demo)
   - [Install](#install)
   - [Constants](#constants)
-  - [When to use Functions vs Hooks.](#when-to-use-functions-vs-hooks)
   - [Functions](#functions)
+    - [allowance](#allowance)
+    - [approve](#approve)
+    - [balanceOf](#balanceof)
+    - [getMintPrice](#getmintprice)
+    - [createToken](#createtoken)
+    - [createTokenAndBuy](#createtokenandbuy)
+    - [buyWithCrypto](#buywithcrypto)
+    - [sellToCrypto](#selltocrypto)
+    - [buyWithMint](#buywithmint)
+    - [sellToMint](#selltomint)
     - [getMintClubBondContract](#getmintclubbondcontract)
     - [getMintClubZapContract](#getmintclubzapcontract)
     - [getBEP20Contract](#getbep20contract)
-  - [Hooks](#hooks)
-    - [useMintPrice](#usemintprice)
-    - [useAllowance](#useallowance)
-    - [useCreate](#usecreate)
-    - [useBuyWithMint](#usebuywithmint)
-    - [useBuyWithCrypto](#usebuywithcrypto)
-    - [useSellToMint](#useselltomint)
-    - [useSellToCrypto](#useselltocrypto)
 
 >
 
@@ -41,7 +42,7 @@ yarn add mint.club-sdk
 These are all constants exported from the SDK.
 
 ```js
-import { BSC_MAINNET, BSC_TESTNET } from "mint.club-sdk";
+import { ADDRESSES, BSC_MAINNET, BSC_TESTNET } from "mint.club-sdk";
 ```
 
 | Name        | Type   | Value |
@@ -49,13 +50,342 @@ import { BSC_MAINNET, BSC_TESTNET } from "mint.club-sdk";
 | BSC_MAINNET | number | 56    |
 | BSC_TESTNET | number | 97    |
 
-## When to use Functions vs Hooks.
-
-If you're working on a React project, using Hooks is recommended.
-
-You may use functions if you're working on a node project, or you want to only invoke the call on certain events like button click.
+```js
+ADDRESSES = {
+  mintClubBond: {
+    [BSC_TESTNET]: "0xB9B492B5D470ae0eB2BB07a87062EC97615d8b09",
+    [BSC_MAINNET]: "0x8BBac0C7583Cc146244a18863E708bFFbbF19975",
+  },
+  mintClubZap: {
+    [BSC_TESTNET]: "0xFC1Ccd12A3aFbf3e6E5ba134Fa446935D20bc2F6",
+    [BSC_MAINNET]: "0x9111A272e9dE242Cf9aa7932a42dB3664Ca3eC9D",
+  },
+  mint: {
+    [BSC_TESTNET]: "0x4d24BF63E5d6E03708e2DFd5cc8253B3f22FE913",
+    [BSC_MAINNET]: "0x1f3Af095CDa17d63cad238358837321e95FC5915",
+  },
+  pancakeswapRouter: {
+    [BSC_TESTNET]: "0xD99D1c33F9fC3444f8101754aBC46c52416550D1",
+    [BSC_MAINNET]: "0x10ED43C718714eb63d5aA57B78B54704E256024E",
+  },
+  wbnb: {
+    [BSC_TESTNET]: "0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd",
+    [BSC_MAINNET]: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+  },
+  busd: {
+    [BSC_TESTNET]: "0xeD24FC36d5Ee211Ea25A80239Fb8C4Cfd80f12Ee",
+    [BSC_MAINNET]: "0xe9e7cea3dedca5984780bafc599bd69add087d56",
+  },
+  usdt: {
+    [BSC_TESTNET]: "0x337610d27c682E347C9cD60BD4b3b107C9d34dDd",
+    [BSC_MAINNET]: "0x55d398326f99059fF775485246999027B3197955",
+  },
+};
+```
 
 ## Functions
+
+### allowance
+
+Returns the allowed spending of `spender` from `owner` in BigNumber.
+
+Usage
+
+```jsx
+import { allowance } from "mint.club-sdk";
+
+const allowance = await allowance(tokenAddress, owner, spender, chainId?, onSuccess?, onError?);
+
+```
+
+Input parameters
+
+| Parameter    | Type     | Description                     | Required |
+| ------------ | -------- | ------------------------------- | -------- |
+| tokenAddress | string   | BEP-20 Token address            | Yes      |
+| owner        | address  | Owner contract/wallet address   | Yes      |
+| spender      | address  | Spender contract/wallet address | Yes      |
+| chainId      | number   | Network chain id                | No       |
+| onSuccess    | function | (BigNumber) => {}               | No       |
+| onError      | function | (error) => {}                   | No       |
+
+Output
+
+| Parameter | Type      | Description           |
+| --------- | --------- | --------------------- |
+| allowance | BigNumber | bignumber.js instance |
+
+### approve
+
+Returns the allowed spending of `spender` from `owner` in BigNumber.
+
+Usage
+
+```jsx
+import { approve } from "mint.club-sdk";
+
+await approve(tokenAddress, spender, signer, amount?, chainId?, onStart? onSuccess?, onError?);
+
+```
+
+Input parameters
+
+| Parameter    | Type     | Description                                                | Required |
+| ------------ | -------- | ---------------------------------------------------------- | -------- |
+| tokenAddress | string   | BEP-20 Token address                                       | Yes      |
+| owner        | address  | Owner contract/wallet address                              | Yes      |
+| spender      | address  | Spender contract/wallet address                            | Yes      |
+| amount       | number   | Amount to approve, defaults to ethers.constants.MaxUint256 | No       |
+| chainId      | number   | Network chain id                                           | No       |
+| onStart      | function | () => {}                                                   | No       |
+| onSuccess    | function | (tx) => {}                                                 | No       |
+| onError      | function | (error) => {}                                              | No       |
+
+### balanceOf
+
+Returns the balanceOf wallet address for a specific token.
+
+Usage
+
+```jsx
+import { balanceOf } from "mint.club-sdk";
+
+const balance = await banlanceOf(tokenAddress, walletAddress, chainId?, onSuccess?, onError?);
+
+```
+
+### getMintPrice
+
+Returns the price of MINT based on pancakeswap.finance.
+
+Usage
+
+```jsx
+import { getMintPrice } from "mint.club-sdk";
+
+const price = await getMintPrice(chainId?);
+
+```
+
+Input parameters
+
+| Parameter | Type   | Description      | Required |
+| --------- | ------ | ---------------- | -------- |
+| chainId   | number | Network chain id | No       |
+
+Output
+
+| Parameter | Type   | Description   |
+| --------- | ------ | ------------- |
+| price     | number | Price of MINT |
+
+### createToken
+
+Invokes the createToken contract call from Mint.club bond contract.
+
+```jsx
+import { createToken } from "mint.club-sdk";
+
+const tx = await createToken(name, symbol, supply, signer, chainId?, onStart?, onSuccess?, onError?);
+```
+
+Input parameters
+
+| Parameter | Type     | Description         | Required |
+| --------- | -------- | ------------------- | -------- |
+| name      | string   | Name of token       | Yes      |
+| symbol    | string   | Symbol of token     | Yes      |
+| supply    | number   | Max supply amount   | Yes      |
+| signer    | Signer   | Transaction signer. | Yes      |
+| chainId   | number   | Network chain id    | No       |
+| onStart   | function | (tx) => {}          | No       |
+| onSuccess | function | (tx) => {}          | No       |
+| onError   | function | (err) => {}         | No       |
+
+Output
+
+| Parameter | Type   | Description         |
+| --------- | ------ | ------------------- |
+| tx        | object | Transaction receipt |
+
+### createTokenAndBuy
+
+Invokes the createTokenAndBuy contract call from Mint.club bond contract. Used for instant purchasing a token after it's minted to prevent front-running.
+
+```jsx
+import { createTokenAndBuy } from "mint.club-sdk";
+
+const tx = await createTokenAndBuy(name, symbol, supply, amount, referrer, signer, chainId?, onStart?, onSuccess?, onError?);
+```
+
+Input parameters
+
+| Parameter | Type     | Description                 | Required |
+| --------- | -------- | --------------------------- | -------- |
+| name      | string   | Name of token               | Yes      |
+| symbol    | string   | Symbol of token             | Yes      |
+| supply    | number   | Max supply amount           | Yes      |
+| amount    | string   | Amount of token to purchase | Yes      |
+| referrer  | addrress | Referrer wallet address     | Yes      |
+| signer    | Signer   | Transaction signer.         | Yes      |
+| chainId   | number   | Network chain id            | No       |
+| onStart   | function | (tx) => {}                  | No       |
+| onSuccess | function | (tx) => {}                  | No       |
+| onError   | function | (err) => {}                 | No       |
+
+Output
+
+| Parameter | Type   | Description         |
+| --------- | ------ | ------------------- |
+| tx        | object | Transaction receipt |
+
+Input parameters
+
+| Parameter     | Type     | Description          | Required |
+| ------------- | -------- | -------------------- | -------- |
+| tokenAddress  | string   | BEP-20 Token address | Yes      |
+| walletAddress | address  | Wallet address       | Yes      |
+| chainId       | number   | Network chain id     | No       |
+| onSuccess     | function | (BigNumber) => {}    | No       |
+| onError       | function | (error) => {}        | No       |
+
+Output
+
+| Parameter | Type      | Description           |
+| --------- | --------- | --------------------- |
+| balance   | BigNumber | bignumber.js instance |
+
+### buyWithCrypto
+
+Invokes the buy contract call from Mint.club bond contract. Used for Crypto -> MINT-based Token.
+
+Usage
+
+```jsx
+import { buyWithCrypto } from "mint.club-sdk";
+
+const { value, tax, buy, BN } = await buyWithCrypto(amountIn, tokenIn, tokenAddress, slippage, referrer?, chainId?);
+const tx = await buy();
+```
+
+Input parameters
+
+| Parameter    | Type    | Description                                                                | Required |
+| ------------ | ------- | -------------------------------------------------------------------------- | -------- |
+| amountIn     | string  | Amount to purchase                                                         | Yes      |
+| tokenIn      | object  | `{ address, decimals }` Pass 'BNB' to address for native currency purchase | Yes      |
+| tokenAddress | address | Token address to purchase                                                  | Yes      |
+| slippage     | number  | Slippage amount. Pass 2 for 2%                                             | No       |
+| referrer     | address | Referrer address                                                           | No       |
+| chainId      | number  | Network chain id                                                           | No       |
+
+Output
+
+| Parameter | Type           | Description                                                 |
+| --------- | -------------- | ----------------------------------------------------------- |
+| value     | number         | Estimated output value                                      |
+| tax       | number         | Estimated tax amount                                        |
+| BN        | BigNumber      | BigNumber instance of `value`. Used for precise calculation |
+| buy       | async function | A buy function that returns a Promise                       |
+
+### sellToCrypto
+
+Invokes the sell contract call from Mint.club bond contract. Used for MINT-based token -> Crypto.
+
+Usage
+
+```jsx
+import { sellToCrypto } from "mint.club-sdk";
+
+const { value, tax, BN, sell, approve } = await sellToCrypto(amountIn, tokenAddress, tokenOut, slippage, referrer?, chainId?);
+const tx = await sell();
+```
+
+Input parameters
+
+| Parameter    | Type    | Description                                                                         | Required |
+| ------------ | ------- | ----------------------------------------------------------------------------------- | -------- |
+| amountIn     | string  | Amount to sell                                                                      | Yes      |
+| tokenAddress | address | Token address to sell                                                               | Yes      |
+| tokenOut     | object  | `{ address, decimals }` Pass 'BNB' to address to receive native currency after sell | Yes      |
+| slippage     | number  | Slippage amount. Pass 2 for 2%                                                      | Yes      |
+| referrer     | address | Referrer address                                                                    | No       |
+| chainId      | number  | Network chain id                                                                    | No       |
+
+Output
+
+| Parameter | Type           | Description                                                                               |
+| --------- | -------------- | ----------------------------------------------------------------------------------------- |
+| value     | number         | Estimated output value                                                                    |
+| tax       | number         | Estimated tax amount                                                                      |
+| BN        | BigNumber      | BigNumber instance of `value`. Used for precise calculation                               |
+| sell      | async function | A sell function that returns a Promise                                                    |
+| approve   | async function | An approve function that returns a Promise. Null if allowance for token is greater than 0 |
+
+### buyWithMint
+
+Invokes the buy contract call from Mint.club bond contract. Used for MINT -> MINT-based token.
+
+Usage
+
+```jsx
+import { buyWithMint } from "mint.club-sdk";
+
+const { value, tax, buy, BN } = await buyWithMint(amountIn, tokenAddress, slippage, referrer?, isUSD?, forcedMintPrice?, chainId?);
+const tx = await buy();
+```
+
+Input parameters
+
+| Parameter       | Type    | Description                                             | Required |
+| --------------- | ------- | ------------------------------------------------------- | -------- |
+| amountIn        | string  | Amount to purchase                                      | Yes      |
+| tokenAddress    | address | Token address to purchase                               | Yes      |
+| slippage        | number  | Slippage amount. Pass 2 for 2%                          | Yes      |
+| referrer        | address | Referrer address                                        | No       |
+| isUSD           | boolean | Pass true if `amountIn` is USD value                    | No       |
+| forcedMintPrice | number  | Calculate the output amount with this forced MINT price | No       |
+| chainId         | number  | Network chain id                                        | No       |
+
+Output
+
+| Parameter | Type           | Description                                                 |
+| --------- | -------------- | ----------------------------------------------------------- |
+| value     | number         | Estimated output value                                      |
+| tax       | number         | Estimated tax amount                                        |
+| BN        | BigNumber      | BigNumber instance of `value`. Used for precise calculation |
+| buy       | async function | A buy function that returns a Promise                       |
+
+### sellToMint
+
+Invokes the sell contract call from Mint.club bond contract. Used for MINT-based token -> MINT.
+
+```jsx
+import { sellToMint } from "mint.club-sdk";
+
+const { value, tax, BN, sell, approve } = await sellToMint(amountIn, tokenAddress, slippage, referrer?, chainId?);
+const tx = await sell();
+```
+
+Input parameters
+
+| Parameter    | Type    | Description                    | Required |
+| ------------ | ------- | ------------------------------ | -------- |
+| amountIn     | string  | Amount to sell                 | Yes      |
+| tokenAddress | address | Token address to sell          | Yes      |
+| slippage     | number  | Slippage amount. Pass 2 for 2% | Yes      |
+| referrer     | address | Referrer address               | No       |
+| chainId      | number  | Network chain id               | No       |
+
+Output
+
+| Parameter | Type           | Description                                                                               |
+| --------- | -------------- | ----------------------------------------------------------------------------------------- |
+| value     | number         | Estimated output value                                                                    |
+| tax       | number         | Estimated tax amount                                                                      |
+| BN        | BigNumber      | BigNumber instance of `value`. Used for precise calculation                               |
+| sell      | async function | A sell function that returns a Promise                                                    |
+| approve   | async function | An approve function that returns a Promise. Null if allowance for token is greater than 0 |
 
 ### getMintClubBondContract
 
@@ -117,267 +447,4 @@ Input parameters
 | --------- | ------ | ---------------- | -------- |
 | address   | string | Token address    | Yes      |
 | chainId   | number | Network chain id | No       |
-
-## Hooks
-
-### useMintPrice
-
-This hook is used to retrieve the current price of MINT on pancakeswap.finance.
-
-Usage
-
-```jsx
-import { useMintPrice } from "mint.club-sdk";
-
-const {getPrice} = useMintPrice(chainId?);
-const price = await getPrice();
-```
-
-Input parameters
-
-| Parameter | Type   | Description      | Required |
-| --------- | ------ | ---------------- | -------- |
-| chainId   | number | Network chain id | No       |
-
-Output
-
-| Parameter | Type   | Description                |
-| --------- | ------ | -------------------------- |
-| price     | number | MINT price value in number |
-
-### useAllowance
-
-This hook is used to retrieve approved allowance on a certain contract.
-
-Usage
-
-```jsx
-import { useAllowance } from "mint.club-sdk";
-
-const allowance = useMintPrice(tokenAddress, owner, spender, chainId?);
-```
-
-Input parameters
-
-| Parameter    | Type   | Description      | Required |
-| ------------ | ------ | ---------------- | -------- |
-| tokenAddress | string | token address    | Yes      |
-| owner        | string | owner address    | Yes      |
-| spender      | string | spender address  | Yes      |
-| chainId      | number | Network chain id | No       |
-
-Output
-
-| Parameter | Type   | Description               |
-| --------- | ------ | ------------------------- |
-| allowance | string | allowance value in string |
-
-### useCreate
-
-This hook is used to mint a new MINT-based BEP-20 token.
-
-The hook returns two functions `createToken` and `createTokenAndBuy`.
-
-Use `createToken` if you want to just mint a new token, and use `createTokenAndBuy` if you want to instant purchase the token after minting to prevent front-running.
-
-Usage
-
-```jsx
-import { useCreate, useWeb3Provider } from "mint.club-sdk";
-import { useWeb3React } from "@web3-react/core";
-
-const { account } = useWeb3React();
-const { createToken, createTokenAndBuy } = useCreate(
-  provider?.getSigner(account),
-  chainId?
-);
-
-<div>
-  <button
-    onClick={() => {
-      createToken(name, symbol, supply, onStart, onSuccess, onError);
-    }}
-  >
-    Create w/o Instant purchase
-  </button>
-  <button
-    onClick={() => {
-      createTokenAndBuy(
-        name,
-        symbol,
-        supply,
-        amount,
-        referrer,
-        onStart,
-        onSuccess,
-        onError
-      );
-    }}
-  >
-    Create w/ Instant purchase
-  </button>;
-</div>;
-```
-
-Input parameters
-
-| Parameter | Type   | Description                             | Required |
-| --------- | ------ | --------------------------------------- | -------- |
-| signer    | object | signer object to sign the contract call | Yes      |
-| chainId   | number | Network chain id                        | No       |
-
-Output
-
-| Parameter         | Type     | Description                                                                                                                                                       |
-| ----------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| createToken       | function | function createToken(name:string, symbol:string, supply:number, onStart:function?, onSuccess:function?, onError:function?);                                       |
-| createTokenAndBuy | function | function createTokenAndBuy(name:string, symbol:string, supply:number, amount:number, referrer:string, onStart:function?, onSuccess:function?, onError:function?); |
-
-### useBuyWithMint
-
-This hook is used to convert MINT token to MINT-based token.
-
-Usage
-
-```jsx
-import { useBuyWithMint } from "mint.club-sdk";
-
-const { amountOut, loading, error } = useBuyWithMint({
-  amountIn,
-  inputType,
-  slippage,
-  tokenAddress,
-  referrer?,
-  chainId?
-});
-```
-
-Input parameters
-
-| Parameter    | Type             | Description                           | Required |
-| ------------ | ---------------- | ------------------------------------- | -------- |
-| amountIn     | number or string | amount to spend                       | Yes      |
-| inputType    | string           | "USD" or "MINT"                       | Yes      |
-| slippage     | number           | pass in 2 for 2% slippage             | Yes      |
-| tokenAddress | string           | MINT-based token address              | Yes      |
-| referrer     | string           | referrer address to send buy/sell tax | No       |
-| chainId      | number           | Network chain id                      | No       |
-
-Output
-
-| Parameter | Type    | Description                                                                                                                                                                                                 |
-| --------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| amountOut | object  | `{value: string, tax: string, BN: BigNumber, buy: function(signer)}` - value: output value, tax: tax in MINT, BN: bignumber.js object for more precise calculation, buy: function that invokes contrat call |
-| loading   | boolean | `true` if calculation is loading                                                                                                                                                                            |
-| error     | string  | string value if there is an error message                                                                                                                                                                   |
-
-### useBuyWithCrypto
-
-This hook is used to convert BEP-20 token to MINT-based token.
-
-Usage
-
-```jsx
-import { useBuyWithCrypto } from "mint.club-sdk";
-
-const { amountOut, loading, error } = useBuyWithCrypto({
-  amountIn,
-  tokenIn,
-  tokenAddress,
-  slippage,
-  referrer?,
-  chainId?
-});
-```
-
-Input parameters
-
-| Parameter    | Type          | Description                                                           | Required |
-| ------------ | ------------- | --------------------------------------------------------------------- | -------- |
-| amountIn     | number/string | amount to spend                                                       | Yes      |
-| tokenIn      | object        | `{address: input token address, decimals: number of token decimals }` | Yes      |
-| tokenAddress | string        | MINT-based token address                                              | Yes      |
-| slippage     | number        | pass in 2 for 2% slippage                                             | Yes      |
-| referrer     | string        | referrer address to send buy/sell tax                                 | No       |
-| chainId      | number        | Network chain id                                                      | No       |
-
-Output
-
-| Parameter | Type    | Description                                                                                                                                                                                                 |
-| --------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| amountOut | object  | `{value: string, tax: string, BN: BigNumber, buy: function(signer)}` - value: output value, tax: tax in MINT, BN: bignumber.js object for more precise calculation, buy: function that invokes contrat call |
-| loading   | boolean | `true` if calculation is loading                                                                                                                                                                            |
-| error     | string  | string value if there is an error message                                                                                                                                                                   |
-
-### useSellToMint
-
-This hook is used to convert MINT-based token to MINT.
-
-Usage
-
-```jsx
-import { useSellToMint } from "mint.club-sdk";
-
-const { amountOut, loading, error } = useBuyWithCrypto({
-  amountIn,
-  tokenAddress,
-  slippage,
-  referrer?,
-  chainId?
-});
-```
-
-Input parameters
-
-| Parameter    | Type          | Description                           | Required |
-| ------------ | ------------- | ------------------------------------- | -------- |
-| amountIn     | number/string | amount to sell                        | Yes      |
-| tokenAddress | string        | MINT-based token address              | Yes      |
-| slippage     | number        | pass in 2 for 2% slippage             | Yes      |
-| referrer     | string        | referrer address to send buy/sell tax | No       |
-
-Output
-
-| Parameter | Type    | Description                                                                                                                                                                                                                                                                                             |
-| --------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| amountOut | object  | `{value: string, tax: string, BN: BigNumber, sell: function(signer), approve: function(signer)}` - value: output value, tax: tax in MINT, BN: bignumber.js object for more precise calculation, sell: function that invokes `sell` contrat call, approve: function that invokes `approve` contract call |
-| loading   | boolean | `true` if calculation is loading                                                                                                                                                                                                                                                                        |
-| error     | string  | string value if there is an error message                                                                                                                                                                                                                                                               |
-
-### useSellToCrypto
-
-This hook is used to convert MINT-based token to other BEP-20 token.
-
-Usage
-
-```jsx
-import { useSellToCrypto } from "mint.club-sdk";
-
-const { amountOut, loading, error } = useBuyWithCrypto({
-  amountIn,
-  tokenAddress,
-  tokenOut,
-  slippage,
-  referrer?,
-  chainId?
-});
-```
-
-Input parameters
-
-| Parameter    | Type          | Description                                                            | Required |
-| ------------ | ------------- | ---------------------------------------------------------------------- | -------- |
-| amountIn     | number/string | amount to sell                                                         | Yes      |
-| tokenAddress | string        | MINT-based token address                                               | Yes      |
-| tokenOut     | object        | `{address: output token address, decimals: number of token decimals }` | Yes      |
-| slippage     | number        | pass in 2 for 2% slippage                                              | Yes      |
-| referrer     | string        | referrer address to send buy/sell tax                                  | No       |
-| chainId      | number        | Network chain id                                                       | No       |
-
-Output
-
-| Parameter | Type    | Description                                                                                                                                                                                                                                                                                             |
-| --------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| amountOut | object  | `{value: string, tax: string, BN: BigNumber, sell: function(signer), approve: function(signer)}` - value: output value, tax: tax in MINT, BN: bignumber.js object for more precise calculation, sell: function that invokes `sell` contrat call, approve: function that invokes `approve` contract call |
-| loading   | boolean | `true` if calculation is loading                                                                                                                                                                                                                                                                        |
-| error     | string  | string value if there is an error message                                                                                                                                                                                                                                                               |
+|           |

@@ -1,5 +1,5 @@
 import BigNumber from "bignumber.js";
-import { BIG_TEN } from "./bigNumber";
+import { BIG_TEN } from "./bignumber";
 import { MINT_DECIMAL_FORMAT } from "../constants";
 import numeral from "numeral";
 

@@ -9,15 +9,10 @@ export async function calculateCryptoOutAmount(
   from,
   to,
   amount,
-  chainId = BSC_MAINNET,
-  onSuccess,
-  onError
+  chainId = BSC_MAINNET
 ) {
   try {
-    // console.log(toFixedDown(mintAmount));
-    console.log("call");
     const contract = getMintClubZapContract(null, chainId);
-    console.log(from, to, amount, chainId);
     const result = await contract.estimateZapIn(
       from,
       to,
@@ -33,22 +28,12 @@ export async function calculateCryptoOutAmount(
     );
     const tokenToReceive = getBalanceNumber(result.tokenToReceive.toString());
     const outBN = new BigNumber(result.tokenToReceive.toString());
-    onSuccess(tokenToReceive, mintTokenTaxAmount, outBN);
+    return [tokenToReceive, mintTokenTaxAmount, outBN];
   } catch (e) {
     console.error(e);
-    onError(e);
+    return [0, 0, null];
   }
 }
-
-/**
- * Used for reverse calculation, when calculating IN amount.
- * @param {*} amount
- * @param {*} totalSupply
- * @param {*} address
- * @param {*} getBestTradeExactOut
- * @param {*} onSuccess
- * @param {*} onError
- */
 
 export async function calculateCryptoInAmount(
   amount,
@@ -75,9 +60,7 @@ export async function calculateCryptoInAmount(
 export async function calculateMintOutAmount(
   tokenAddress,
   mintAmount,
-  chainId = BSC_MAINNET,
-  onSuccess,
-  onError
+  chainId = BSC_MAINNET
 ) {
   try {
     const contract = getMintClubBondContract(null, chainId);
@@ -93,10 +76,10 @@ export async function calculateMintOutAmount(
     const out = getBalanceNumber(result[0].toString());
     const outBN = new BigNumber(result[0].toString());
     const tax = getBalanceNumber(result[1].toString());
-    onSuccess(out, tax, outBN);
+    return [out, tax, outBN];
   } catch (e) {
     console.error(e);
-    onError(e);
+    return [0, 0, 0];
   }
 }
 
@@ -124,16 +107,9 @@ export async function calculateMintInAmount(
   }
 }
 
-export async function calculateSellToMint(
-  amount,
-  tokenAddress,
-  chainId,
-  onSuccess,
-  onError
-) {
+export async function calculateSellToMint(amount, tokenAddress, chainId) {
   if (amount === "0") {
-    onSuccess(0, 0, null);
-    return;
+    return [0, 0, null];
   }
   try {
     const contract = getMintClubBondContract(null, chainId);
@@ -144,24 +120,16 @@ export async function calculateSellToMint(
     const out = getBalanceNumber(result[0].toString());
     const outBN = new BigNumber(result[0].toString());
     const tax = getBalanceNumber(result[1].toString());
-    onSuccess(out, tax, outBN);
+    return [out, tax, outBN];
   } catch (e) {
     console.error(e);
-    onError(e);
+    return [0, 0, null];
   }
 }
 
-export async function calculateSellToCrypto(
-  from,
-  to,
-  amount,
-  chainId,
-  onSuccess,
-  onError
-) {
+export async function calculateSellToCrypto(from, to, amount, chainId) {
   if (amount === "0") {
-    onSuccess(0, 0, null);
-    return;
+    return [0, 0, null];
   }
   try {
     const contract = getMintClubZapContract(null, chainId);
@@ -173,9 +141,9 @@ export async function calculateSellToCrypto(
     const out = getBalanceNumber(result[0].toString());
     const outBN = new BigNumber(result[0].toString());
     const tax = getBalanceNumber(result[1].toString());
-    onSuccess(out, tax, outBN);
+    return [out, tax, outBN];
   } catch (e) {
     console.error(e);
-    onError(e);
+    return [0, 0, null];
   }
 }

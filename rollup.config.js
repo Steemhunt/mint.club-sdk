@@ -14,12 +14,18 @@ export default {
       file: pkg.main,
       format: "cjs",
       sourcemap: true,
+      export: "named",
     },
     {
       file: pkg.module,
-      format: "es",
+      format: "esm",
       sourcemap: true,
+      export: "named",
     },
+  ],
+  external: [
+    ...Object.keys(pkg.dependencies || {}),
+    ...Object.keys(pkg.peerDependencies || {}),
   ],
   plugins: [
     external(),
